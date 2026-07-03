@@ -12,7 +12,10 @@ function addTask() {
     }
 
     // Store the task in the array
-    tasks.push(task);
+    tasks.push({
+        name: task,
+        completed: false
+    });
 
     // Refresh the displayed list
     displayTasks();
@@ -27,19 +30,38 @@ function displayTasks() {
 
     taskList.innerHTML = "";
 
+    
+
     for (let i = 0; i < tasks.length; i++) {
 
         let li = document.createElement("li");
 
-        li.innerHTML = `
-            ${tasks[i]}
-            <button onclick="deleteTask(${i})">
-                ❌
-            </button>
+         li.innerHTML = `
+            <span class="${tasks[i].completed ? "completed" : ""}">
+                ${tasks[i].name}
+            </span>
+
+            <div>
+
+                <button onclick="toggleTask(${i})">
+
+                    ${tasks[i].completed ? "Undo" : "Done"}
+
+                </button>
+
+                <button onclick="deleteTask(${i})">
+
+                    ❌
+
+                </button>
+
+            </div>
         `;
 
         taskList.appendChild(li);
     }
+
+
 }
 
 function deleteTask(index) {
@@ -47,4 +69,12 @@ function deleteTask(index) {
     tasks.splice(index, 1);
 
     displayTasks();
+}
+
+function toggleTask(index){
+
+    tasks[index].completed = !tasks[index].completed;
+
+    displayTasks();
+
 }
